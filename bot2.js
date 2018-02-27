@@ -20,12 +20,18 @@ var messages = ["Did you know you can save power by taking shorter showers? If y
     "Use a reusable spoon to stir your coffee! Every year, 138 billion straws and stirrers are thrown away in the USA.",
     "Pay bills online! Not only is it quick and convenient, If every US household received electronic statements, then we could save 18.5 million trees, 2.2 billion tons of greenhouse gases, and 1.7 billion pounds of solid waste per year."]
 
+var symbols = ["\u{10084}", "\u{09728}", "\u{09733}", "\u{09786}", "\u{10051}", "\u{09835}", "\u{08258}", "\u{09834}", "\u{09883}", "\u{09913}", "\u{09956}", "\u{09790}", "\u{09784}", "\u{09925}", "\u{09928}", "\u{09889}", "\u{10051}", "\u{10032}", "\u{10037}", "\u{10035}"]
+
 //which message to send
 var messageLocation = 0;
+let symCnt = symbols.length;
+let num = 100 - symCnt;
 
 function writeTweet(txt) {
+    var r = (Math.floor(Math.random() * 100) - num);
+
     var tweet = {
-        status: txt
+        status: txt + "\n" + symbols[r]
     }
     Twitter.post('statuses/update', tweet, tweeted);
     function tweeted(err, data, response) {
@@ -50,9 +56,9 @@ let autoTweet = function () {
 }
 
 
-setInterval(autoTweet, 30000);
-//to set how often it tweets, desired minutes * 30,000
-//150,000 = every 5 minutes
+setInterval(autoTweet, 15000);
+//to set how often it tweets-> desired minutes * 30,000
+//150,000 = every 5 minutes 75000
 
 
 //Begin the code to reply to people who mention the bot -> https://www.youtube.com/watch?v=ovOtQxLwSzQ
@@ -64,7 +70,7 @@ function tweetEvent(eventMsg) {
     var text = eventMsg.text;
     var from = eventMsg.user.screen_name;
 
-    console.log(replyto + " " + from);
+    console.log("To: " + replyto + " From: " + from);
 
     if (replyto === 'csci428') {
         var newtweet = '@' + from + ' thanks for tweeting me! ' + messages[messageLocation];
