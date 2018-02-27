@@ -7,6 +7,7 @@ var messageLocation = 0;
 
 var stream = Twitter.stream('user');
 stream.on('tweet', tweetEvent);
+
 function tweetEvent(eventMsg) {
 
     var replyto = eventMsg.in_reply_to_screen_name;
@@ -25,8 +26,11 @@ var searchStream = Twitter.stream('public');
 stream.on('tweet', search);
 
 function tweetIt(txt) {
+
+    var r = Math.floor(Math.random() * 100);
+
     var tweet = {
-        status: txt
+        status: txt + "/nTweet Code: " + r
     }
     Twitter.post('statuses/update', tweet, tweeted);
 
@@ -42,8 +46,8 @@ function tweetIt(txt) {
 
 function search(eventMsg) {
     Twitter.get('search/tweets', { q: 'asdfghj csci428', count: 10}, gotData);
-
-    function gotData(err, data) {
+    
+    function gotData(err, data) {/*
         var tweets = data.statuses;
         for (var i = 0; i < tweets.length; i++) {
             console.log(tweets[i].text);
@@ -56,7 +60,7 @@ function search(eventMsg) {
             console.log(replyto + ' ' + from);
             var newtweet = '@' + from + ' Thank you for taking part in the converstion about environmental sustainability!';
             tweetIt(newtweet);
-        }
+        }*/
     }
 }
     
