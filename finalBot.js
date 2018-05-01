@@ -3,6 +3,11 @@ var config = require("./config.js");
 var Twitter = new twit(config);
 
 
+let tweetCount = 0;
+let Fargo = ['-96.901280', '46.976013', '-96.746381', '46.728686'];
+
+console.log("Bot is running");
+
 //Begin the code to auto-tweet -> https://www.youtube.com/watch?v=Fn6k-7zvo4w
 //info from www.50waystohelp.com
 var messages = ["Did you know you can save power by taking shorter showers? If you're really ambitious, try to keep it under 5 minutes!",
@@ -30,8 +35,6 @@ var messages = ["Did you know you can save power by taking shorter showers? If y
 //which message to send
 let mnum = 100 - messages.length;
 var messageLocation = 0;//(Math.floor(Math.random() * 100) - mnum);
-console.log(messageLocation);
-let num = 100 - symbols.length;
 
 
 function writeTweet(txt) {
@@ -49,40 +52,44 @@ function writeTweet(txt) {
             console.log("Success");
         }
     }
-    //go through messages-- if at end, reset
+    /*go through messages-- if at end, reset
     if (messageLocation < messages.length) {
         messageLocation += 1;
     }
     else {
         messageLocation = 0;
-    }
+    } */
 }
 
 let autoTweet = function () {
-    writeTweet(messages[messageLocation]);
+    writeTweet("In the last 6 hours, there have been " + tweetCount + " tweets about sustainability in the Fargo area!");
 }
 
 
-setInterval(autoTweet, 300000);
+setInterval(autoTweet, 21600000);
 //to set how often it tweets-> desired minutes * 30,000
-//150,000 = every 5 minutes 
-//75000 = every 2.5 minutes
+//300,000 = every 5 minutes 
+//150000 = every 2.5 minutes
+//86400000 = one day
+//1800000 = half hour
 
 
-//Begin the code to reply to people who mention the bot -> https://www.youtube.com/watch?v=ovOtQxLwSzQ
-var stream = Twitter.stream('user');
+var stream = Twitter.stream('statuses/filter', { track: 'sustainability Fargo', language: 'en' });
 stream.on('tweet', tweetEvent);
+
 
 function tweetEvent(eventMsg) {
     var replyto = eventMsg.in_reply_to_screen_name;
     var text = eventMsg.text;
     var from = eventMsg.user.screen_name;
-
-    console.log("To: " + replyto + " From: " + from);
-
-    if (replyto === 'csci428') {
-        var newtweet = '@' + from + ' thanks for tweeting me! ' + messages[messageLocation];
+    
+    
+        tweetCount += 1;
+        console.log(from + " tweeted about sustainability from inside Fargo! Today, we are at " + tweetCount + " tweets!");
+        var newtweet = '@' + from + ' thanks for taking part in the conversation about sustainabilty in our community!';
         writeTweet(newtweet);
-    }
+
+    
+    
 }
 

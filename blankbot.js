@@ -44,9 +44,9 @@ let autoTweet = function () {
     writeTweet(messages[messageLocation]);
 }
 setInterval(autoTweet, 300000);
-//to set how often it tweets-> desired minutes * 30,000
-//150,000 = every 5 minutes 
-//75000 = every 2.5 minutes
+//to set how often it tweets-> desired minutes * 60,000
+//300,000 = every 5 minutes 
+//150,000 = every 2.5 minutes
 
 
 //Begin the code to reply to people who mention the bot -> https://www.youtube.com/watch?v=ovOtQxLwSzQ
@@ -59,7 +59,7 @@ function tweetEvent(eventMsg) {
     var from = eventMsg.user.screen_name;
 
     console.log("To: " + replyto + " From: " + from);
-    //insert your bot's @ handle here
+    //insert your bot's @ handle here, minus the @
     if (replyto === '') {
         //adding the message is optional, you can make it reply whatever you want
         var newtweet = '@' + from + ' thanks for tweeting me! ' + messages[messageLocation];
